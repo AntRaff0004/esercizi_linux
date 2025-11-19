@@ -35,7 +35,7 @@ int main()
         exit(1);
     }
 
-    sem_id = semget(IPC_PRIVATE, 5, IPC_CREAT | 0644);
+    sem_id = semget(IPC_PRIVATE, 6, IPC_CREAT | 0644);
 
     if (sem_id < 0)
     {
@@ -68,6 +68,7 @@ int main()
     semctl(sem_id, MESSAGGIO_DISP_2, SETVAL, 0);
     semctl(sem_id, MESSAGGIO_DISP_3, SETVAL, 0);
     semctl(sem_id, MUTEX_P, SETVAL, 1);
+    semctl(sem_id, MUTEX_C, SETVAL, 1);
 
     for (int i = 0; i < 3; i++)
     {
@@ -82,7 +83,7 @@ int main()
 
             srand(getpid());
 
-            int chiave = i;
+            int chiave = i+1;
 
             for(int j=0; j<3; j++) {
 
@@ -109,7 +110,7 @@ int main()
 
             printf("[%d] Avvio consumatore\n", getpid());
 
-            int chiave = i;
+            int chiave = i+1;
 
             for(int j=0; j<3; j++) {
 

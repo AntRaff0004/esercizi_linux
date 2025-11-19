@@ -29,11 +29,11 @@ void produzione(int sem_id, buffer *vettore, int *stato, int dim, int chiave, in
     sleep(rand() % 3 + 1);
 
     printf("[%d] Produttore, chiave %d, buffer %d, valore=%d\n", getpid(), chiave, i, valore);
+    vettore[i].chiave = chiave;
+    vettore[i].valore = valore;
 
     stato[i] = OCCUPATO;
 
-    vettore[i].chiave = chiave;
-    vettore[i].valore = valore;
 
     if (chiave == 1)
     {
@@ -69,6 +69,8 @@ int consumazione(int sem_id, buffer *vettore, int *stato, int dim, int chiave)
         Wait_Sem(sem_id, MESSAGGIO_DISP_3);
     }
 
+    Wait_Sem(sem_id, MUTEX_C);
+
     int i = 0;
     while (stato[i] != OCCUPATO || vettore[i].chiave != chiave)
     {
@@ -79,14 +81,16 @@ int consumazione(int sem_id, buffer *vettore, int *stato, int dim, int chiave)
 
     printf("[%d] Consumatore, chiave %d, buffer %d in uso...\n", getpid(), chiave, i);
 
+    Signal_Sem(sem_id, MUTEX_C);
+
     sleep(rand() % 3 + 1);
 
+
+
+    valore = vettore[i].valore;
     printf("[%d] Consumatore, chiave %d, buffer %d, valore=%d\n", getpid(), chiave, i, valore);
 
     stato[i] = LIBERO;
-
-    valore = vettore[i].valore;
-
     Signal_Sem(sem_id, SPAZIO_DISP);
 
     return valore;

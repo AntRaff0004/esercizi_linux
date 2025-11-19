@@ -14,11 +14,8 @@ int consumazione(int sem_id, buffer * vettore, int *stato, int dim, int chiave);
 #define MESSAGGIO_DISP_2 2
 #define MESSAGGIO_DISP_3 3
 #define MUTEX_P 4
+#define MUTEX_C 5
 
-/* Il semaforo MUTEX_C non è necessario,
- * poiché i consumatori operano su
- * buffer distinti in base alla chiave.
- */
 
 
 #define LIBERO 0
